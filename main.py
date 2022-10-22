@@ -121,8 +121,8 @@ def clean_file(df):
     df["Tweet"]=df["Tweet"].apply(file_processing)
     df["Tweet"]=df["Tweet"].apply(normalize)
     df["Tweet"]=df["Tweet"].apply(_stopword_removal)
-    a=pd.DataFrame(df[["a","Tweet"]])
-    insertTextFile(a)
+    text=pd.DataFrame(df[["a","Tweet"]])
+    insertTextFile(text)
 
 # tweet = "test www.google.com http:asd https: USER Ya akan bani\ntaplak \n dkk \xf0\x9f\x98\x84\xf0\x9f\x98\x84\xf0\x9f\x98\x84 membuang  hahah kalo bgt #jokowi3 ?? saya'"
 # hasil = dataCleansing(tweet)
