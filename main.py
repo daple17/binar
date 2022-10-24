@@ -63,7 +63,6 @@ def _stopword_removal(content):
 
 def lowerCase(i): return i.lower()
 
- 
 def text_proccesing(tweet):
     tweet = re.sub(r"rt", "", tweet)
     tweet = re.sub(r"user", "", tweet)
@@ -74,7 +73,7 @@ def text_proccesing(tweet):
     tweet = re.sub(r'[^\x00-\x7f]',r'', tweet)
     tweet = re.sub(r"[^\w\d\s]+", "", tweet)
     # tweet = re.sub(r'[^A-Za-z0-9]', "", tweet)
-    # tweet = re.sub(r"x[A-Za-z0-9./]+", "", tweet)
+    tweet = re.sub("x[a-z0-9]{,2}", "", tweet)
     tweet = re.sub(' +', ' ', tweet)
     #tweet = tweet.strip()
     return tweet
@@ -88,7 +87,7 @@ def file_processing(tweet):
     tweet = re.sub("#[A-Za-z0-9_]+","", tweet)
     tweet = re.sub(r'[^\x00-\x7f]',r'', tweet)
     tweet = re.sub(r"[^\w\d\s]+", "", tweet)
-    tweet = re.sub(r"\\x[A-Za-z0-9./]+", "", unidecode(tweet))
+    tweet = re.sub(r"x[A-Za-z0-9./]+", "", unidecode(tweet))
     return tweet
 
 def normalize(tweet):
@@ -121,6 +120,7 @@ def clean_file(df):
     df["Tweet"]=df["Tweet"].apply(file_processing)
     df["Tweet"]=df["Tweet"].apply(normalize)
     df["Tweet"]=df["Tweet"].apply(_stopword_removal)
+    df[['Tweet','HS','Abusive']].to_csv('output2.csv', index=False, header=False)
     text=pd.DataFrame(df[["a","Tweet"]])
     insertTextFile(text)
 
@@ -143,15 +143,6 @@ def file_cleansing():
     clean_file(df)
     return jsonify({"result":"file berhasil diupload ke database"})
     
-
-# #gradio_ui = gr.Interface(
-#     fn=cleansing,
-#     title="Simple Interface",
-#     inputs=[gr.Textbox(label="input text")],
-#     outputs=[gr.Textbox(label="output text")]
-# #)
-
-#gradio_ui.launch()
 
 if __name__ == '__main__':
  app.run(port=1234, debug=True)
